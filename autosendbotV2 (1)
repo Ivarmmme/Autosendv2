@@ -1,0 +1,36 @@
+import asyncio
+from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.error import TelegramError
+
+# Replace 'YOUR_API_TOKEN' with your bot's API token
+API_TOKEN = '7379448374:AAH4VZaVBc3jllttgDeGQtlcIl-kPYEzyqY'
+GROUP_CHAT_ID = '-1001289294178'  # Replace with your group's chat ID
+
+bot = Bot(token=API_TOKEN)
+last_message_id = None
+
+async def send_message():
+    global last_message_id
+    try:
+        # Delete the previous message if it exists
+        if last_message_id:
+            await bot.delete_message(chat_id=GROUP_CHAT_ID, message_id=last_message_id)
+        
+        # Create a button with a URL
+        button = InlineKeyboardButton(text="Contact us✅", url="https://t.me/Ivar_mone")
+        keyboard = InlineKeyboardMarkup([[button]])
+        
+        # Send a new message with the button
+        message = await bot.send_message(chat_id=GROUP_CHAT_ID, text="Need to advertise your content? Lets partner up", reply_markup=keyboard)
+        last_message_id = message.message_id
+    except TelegramError as e:
+        print(f"Error: {e}")
+
+async def main():
+    while True:
+        await send_message()
+        await asyncio.sleep(600)  # Wait for 10 minutes
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
